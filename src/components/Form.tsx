@@ -1,35 +1,39 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
 import React from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
 import SWOTDropdown from './SWOTDropdown';
+import {FormPropType} from '../SwotType/SwotType';
+import Modal from 'react-native-modal';
 
 const Form = ({
   textInputValue,
   setTextInputValue,
   setSelectedDropdownValue,
-  selectedDropdownValue,
   handleFormSubmit,
-}) => {
+  showForm,
+  handleButtonPress,
+}: FormPropType) => {
   return (
-    <View style={styles.formContainer}>
+    <Modal
+      isVisible={showForm}
+      onBackdropPress={handleButtonPress}
+      onBackButtonPress={handleButtonPress}
+      backdropOpacity={0.7}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      style={styles.formContainer}>
       <TextInput
         style={styles.textInput}
-        placeholder="Add to analyse"
+        placeholder="Add something to analyse"
         placeholderTextColor={'black'}
         value={textInputValue}
         onChangeText={text => setTextInputValue(text)}
       />
+
       <SWOTDropdown selectDropDown={setSelectedDropdownValue} />
       <TouchableOpacity style={styles.submitButton} onPress={handleFormSubmit}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
-    </View>
+    </Modal>
   );
 };
 
