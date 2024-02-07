@@ -1,6 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {colors} from '../constants/Colors';
 
 type ButtonType = {
   title: string;
