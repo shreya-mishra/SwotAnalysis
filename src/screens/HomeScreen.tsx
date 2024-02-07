@@ -32,7 +32,7 @@ const HomeScreen = () => {
 
     setShowForm(false);
     setTextInputValue('');
-    setSelectedDropdownValue('option1');
+    setSelectedDropdownValue('');
   };
   return (
     <View style={styles.container}>
@@ -56,7 +56,7 @@ const HomeScreen = () => {
           buttonColor="green"
           title={'Analyse'}
           handler={() =>
-            navigation.navigate('SwotScreen', {swotData: swotData})
+            navigation.navigate('SWOT Analysis', {swotData: swotData})
           }
         />
       ) : null}

@@ -23,9 +23,9 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Welcome To Analyse your SWOT!'}}
+          options={{title: 'Welcome To SWOT Analyzer!'}}
         />
-        <Stack.Screen name="SwotScreen" component={AnalysisScreen} />
+        <Stack.Screen name="SWOT Analysis" component={AnalysisScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
