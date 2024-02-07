@@ -1,24 +1,19 @@
-import {Animated, LayoutAnimation, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
+import {Animated, StyleSheet, Text, View} from 'react-native';
 
 type swotDataType = {toAnalyse: string; belongsTo: string}[];
+type AnimatedValues = Record<string, Animated.Value>;
 
 const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
-  const strengths = swotData.filter(item =>
-    item.belongsTo.toLowerCase().includes('strength'),
-  );
-  const weaknesses = swotData.filter(item =>
-    item.belongsTo.toLowerCase().includes('weakness'),
-  );
-  const opportunities = swotData.filter(item =>
-    item.belongsTo.toLowerCase().includes('opportunities'),
-  );
-  const threats = swotData.filter(item =>
-    item.belongsTo.toLowerCase().includes('threats'),
-  );
-  const animatedOpacity = useRef(new Animated.Value(0)).current;
-  const fadeInAnimation = () => {
-    Animated.timing(animatedOpacity, {
+  const animatedValues: AnimatedValues = useRef({
+    strengths: new Animated.Value(0),
+    weaknesses: new Animated.Value(0),
+    opportunities: new Animated.Value(0),
+    threats: new Animated.Value(0),
+  }).current;
+
+  const fadeInAnimation = (category: string) => {
+    Animated.timing(animatedValues[category], {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
@@ -26,17 +21,41 @@ const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
   };
 
   useEffect(() => {
-    fadeInAnimation();
+    fadeInAnimation('strengths');
+    fadeInAnimation('weaknesses');
+    fadeInAnimation('opportunities');
+    fadeInAnimation('threats');
   }, []);
 
   const renderBulletPoints = (
     items: {toAnalyse: string; belongsTo: string}[],
+    category: string,
   ) => {
-    return items.map(
+    const sortedItems = items.sort((a, b) =>
+      a.toAnalyse.localeCompare(b.toAnalyse),
+    );
+
+    return sortedItems.map(
       (item: {toAnalyse: string; belongsTo: string}, index: number) => (
         <Animated.Text
           key={index}
-          style={[styles.matrixItem, {opacity: animatedOpacity}]}>
+          style={[
+            styles.matrixItem,
+            {
+              opacity: animatedValues[category].interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
+              transform: [
+                {
+                  translateY: animatedValues[category].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-50, 0],
+                  }),
+                },
+              ],
+            },
+          ]}>
           {'\u2022'} {item.toAnalyse}
         </Animated.Text>
       ),
@@ -48,21 +67,41 @@ const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
       <View style={styles.matrixRow}>
         <View style={[styles.matrixCell, {backgroundColor: '#BED9DE'}]}>
           <Text style={styles.categoryTitle}>Strengths</Text>
-          {renderBulletPoints(strengths)}
+          {renderBulletPoints(
+            swotData.filter(item =>
+              item.belongsTo.toLowerCase().includes('strength'),
+            ),
+            'strengths',
+          )}
         </View>
         <View style={[styles.matrixCell, {backgroundColor: '#FDD1AA'}]}>
           <Text style={styles.categoryTitle}>Weaknesses</Text>
-          {renderBulletPoints(weaknesses)}
+          {renderBulletPoints(
+            swotData.filter(item =>
+              item.belongsTo.toLowerCase().includes('weakness'),
+            ),
+            'weaknesses',
+          )}
         </View>
       </View>
       <View style={styles.matrixRow}>
         <View style={[styles.matrixCell, {backgroundColor: '#D4E3C2'}]}>
           <Text style={styles.categoryTitle}>Opportunities</Text>
-          {renderBulletPoints(opportunities)}
+          {renderBulletPoints(
+            swotData.filter(item =>
+              item.belongsTo.toLowerCase().includes('opportunities'),
+            ),
+            'opportunities',
+          )}
         </View>
         <View style={[styles.matrixCell, {backgroundColor: '#FBCAC0'}]}>
           <Text style={styles.categoryTitle}>Threats</Text>
-          {renderBulletPoints(threats)}
+          {renderBulletPoints(
+            swotData.filter(item =>
+              item.belongsTo.toLowerCase().includes('threats'),
+            ),
+            'threats',
+          )}
         </View>
       </View>
     </View>
@@ -97,6 +136,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#313638',
+    color: '#696969',
   },
 });
