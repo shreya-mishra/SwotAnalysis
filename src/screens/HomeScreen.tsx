@@ -15,9 +15,7 @@ const HomeScreen = () => {
   const [swotData, setSwotData] = useState<SwotItem[]>(swotDummyData);
   const [showForm, setShowForm] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
-  const [selectedDropdownValue, setSelectedDropdownValue] = useState(
-    swotItems[0],
-  );
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState('');
   const navigation = useNavigation();
 
   const handleButtonPress = () => {
@@ -43,6 +41,7 @@ const HomeScreen = () => {
 
       {showForm && (
         <Form
+          selectedDropdownValue={selectedDropdownValue}
           handleButtonPress={handleButtonPress}
           showForm={showForm}
           handleFormSubmit={handleFormSubmit}
