@@ -1,7 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Animated, LayoutAnimation, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 
 type swotDataType = {toAnalyse: string; belongsTo: string}[];
+
 const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
   const strengths = swotData.filter(item =>
     item.belongsTo.toLowerCase().includes('strength'),
@@ -10,19 +11,34 @@ const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
     item.belongsTo.toLowerCase().includes('weakness'),
   );
   const opportunities = swotData.filter(item =>
-    item.belongsTo.toLowerCase().includes('opportunity'),
+    item.belongsTo.toLowerCase().includes('opportunities'),
   );
   const threats = swotData.filter(item =>
     item.belongsTo.toLowerCase().includes('threats'),
   );
+  const animatedOpacity = useRef(new Animated.Value(0)).current;
+  const fadeInAnimation = () => {
+    Animated.timing(animatedOpacity, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    fadeInAnimation();
+  }, []);
+
   const renderBulletPoints = (
     items: {toAnalyse: string; belongsTo: string}[],
   ) => {
     return items.map(
       (item: {toAnalyse: string; belongsTo: string}, index: number) => (
-        <Text key={index} style={styles.matrixItem}>
+        <Animated.Text
+          key={index}
+          style={[styles.matrixItem, {opacity: animatedOpacity}]}>
           {'\u2022'} {item.toAnalyse}
-        </Text>
+        </Animated.Text>
       ),
     );
   };
