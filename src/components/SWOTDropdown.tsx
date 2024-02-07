@@ -3,7 +3,11 @@ import React from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import {swotItems} from '../constant/SwotContants';
 
-const SWOTDropdown = ({selectDropDown}: {selectDropDown: () => {}}) => {
+const SWOTDropdown = ({
+  selectDropDown,
+}: {
+  selectDropDown: (selectedItem: string) => {};
+}) => {
   return (
     <SelectDropdown
       data={swotItems}
@@ -29,7 +33,7 @@ export default SWOTDropdown;
 const styles = StyleSheet.create({
   dropdownButton: {
     width: '100%',
-    paddingVertical: 15,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     // backgroundColor: '#ECECEC',
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   dropdownRow: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    // paddingVertical: 15,
+    // paddingHorizontal: 20,
   },
 });

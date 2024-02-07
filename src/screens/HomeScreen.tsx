@@ -21,7 +21,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   const handleButtonPress = () => {
-    setShowForm(true);
+    setShowForm(prev => !prev);
   };
 
   const handleFormSubmit = () => {
@@ -43,8 +43,9 @@ const HomeScreen = () => {
 
       {showForm && (
         <Form
+          handleButtonPress={handleButtonPress}
+          showForm={showForm}
           handleFormSubmit={handleFormSubmit}
-          selectedDropdownValue={selectedDropdownValue}
           setSelectedDropdownValue={setSelectedDropdownValue}
           setTextInputValue={setTextInputValue}
           textInputValue={textInputValue}
