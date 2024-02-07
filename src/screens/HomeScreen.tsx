@@ -1,9 +1,11 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Button} from 'react-native';
 import React, {useState} from 'react';
 import FloatingButton from '../components/FloatingButton';
 import Form from '../components/Form';
 import {swotItems} from '../constant/SwotContants';
 import SowtList from '../components/SowtList';
+import {useNavigation} from '@react-navigation/native';
+import Button_ from '../components/Button_';
 
 interface SwotItem {
   toAnalyse: string;
@@ -16,6 +18,7 @@ const HomeScreen = () => {
   const [selectedDropdownValue, setSelectedDropdownValue] = useState(
     swotItems[0],
   );
+  const navigation = useNavigation();
 
   const handleButtonPress = () => {
     setShowForm(true);
@@ -47,6 +50,16 @@ const HomeScreen = () => {
           textInputValue={textInputValue}
         />
       )}
+      {swotData.length > 0 ? (
+        <Button_
+          outLine={false}
+          buttonColor="green"
+          title={'Analyse'}
+          handler={() =>
+            navigation.navigate('SwotScreen', {swotData: swotData})
+          }
+        />
+      ) : null}
     </View>
   );
 };
