@@ -1,10 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import {Animated, StyleSheet, Text, View} from 'react-native';
+import {AnimatedValues, SwotDataType} from '../SwotType/SwotType';
 
-type swotDataType = {toAnalyse: string; belongsTo: string}[];
-type AnimatedValues = Record<string, Animated.Value>;
-
-const SwotGraph = ({swotData}: {swotData: swotDataType}) => {
+const SwotGraph = ({swotData}: {swotData: SwotDataType}) => {
   const animatedValues: AnimatedValues = useRef({
     strengths: new Animated.Value(0),
     weaknesses: new Animated.Value(0),

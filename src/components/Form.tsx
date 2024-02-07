@@ -1,35 +1,62 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
+import {StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import SWOTDropdown from './SWOTDropdown';
+import {FormPropType} from '../SwotType/SwotType';
+import Modal from 'react-native-modal';
 
 const Form = ({
   textInputValue,
   setTextInputValue,
   setSelectedDropdownValue,
-  selectedDropdownValue,
   handleFormSubmit,
-}) => {
+  showForm,
+  handleButtonPress,
+  selectedDropdownValue,
+}: FormPropType) => {
+  const [textInputError, setTextInputError] = useState<string | null>(null);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+
+  const validateForm = () => {
+    if (!textInputValue.trim()) {
+      setTextInputError('Please enter something to analyse');
+      return false;
+    } else if (!selectedDropdownValue.trim()) {
+      setCategoryError('Please select a value for analysis');
+      return false;
+    }
+    setTextInputError(null);
+    setCategoryError(null);
+    return true;
+  };
+  const submitForm = () => {
+    if (validateForm()) {
+      handleFormSubmit();
+    }
+  };
   return (
-    <View style={styles.formContainer}>
+    <Modal
+      isVisible={showForm}
+      onBackdropPress={handleButtonPress}
+      onBackButtonPress={handleButtonPress}
+      backdropOpacity={0.7}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      style={styles.formContainer}>
       <TextInput
         style={styles.textInput}
-        placeholder="Add to analyse"
+        placeholder="Add something to analyse"
         placeholderTextColor={'black'}
         value={textInputValue}
         onChangeText={text => setTextInputValue(text)}
       />
+      {textInputError && <Text style={styles.errorText}>{textInputError}</Text>}
+
       <SWOTDropdown selectDropDown={setSelectedDropdownValue} />
-      <TouchableOpacity style={styles.submitButton} onPress={handleFormSubmit}>
+      {categoryError && <Text style={styles.errorText}>{categoryError}</Text>}
+      <TouchableOpacity style={styles.submitButton} onPress={submitForm}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
-    </View>
+    </Modal>
   );
 };
 
@@ -47,6 +74,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     elevation: 10, // Android shadow
     zIndex: 11, // iOS zIndex
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
   },
   textInput: {
     height: 40,

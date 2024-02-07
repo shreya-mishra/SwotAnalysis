@@ -1,8 +1,8 @@
-import {View, StyleSheet, Button} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import FloatingButton from '../components/FloatingButton';
 import Form from '../components/Form';
-import {swotItems} from '../constant/SwotContants';
+import {swotDummyData, swotItems} from '../constant/SwotContants';
 import SowtList from '../components/SowtList';
 import {useNavigation} from '@react-navigation/native';
 import Button_ from '../components/Button_';
@@ -12,16 +12,14 @@ interface SwotItem {
   belongsTo: string;
 }
 const HomeScreen = () => {
-  const [swotData, setSwotData] = useState<SwotItem[]>([]);
+  const [swotData, setSwotData] = useState<SwotItem[]>(swotDummyData);
   const [showForm, setShowForm] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
-  const [selectedDropdownValue, setSelectedDropdownValue] = useState(
-    swotItems[0],
-  );
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState('');
   const navigation = useNavigation();
 
   const handleButtonPress = () => {
-    setShowForm(true);
+    setShowForm(prev => !prev);
   };
 
   const handleFormSubmit = () => {
@@ -34,7 +32,7 @@ const HomeScreen = () => {
 
     setShowForm(false);
     setTextInputValue('');
-    setSelectedDropdownValue('option1');
+    setSelectedDropdownValue('');
   };
   return (
     <View style={styles.container}>
@@ -43,8 +41,10 @@ const HomeScreen = () => {
 
       {showForm && (
         <Form
-          handleFormSubmit={handleFormSubmit}
           selectedDropdownValue={selectedDropdownValue}
+          handleButtonPress={handleButtonPress}
+          showForm={showForm}
+          handleFormSubmit={handleFormSubmit}
           setSelectedDropdownValue={setSelectedDropdownValue}
           setTextInputValue={setTextInputValue}
           textInputValue={textInputValue}
@@ -56,7 +56,7 @@ const HomeScreen = () => {
           buttonColor="green"
           title={'Analyse'}
           handler={() =>
-            navigation.navigate('SwotScreen', {swotData: swotData})
+            navigation.navigate('SWOT Analysis', {swotData: swotData})
           }
         />
       ) : null}
