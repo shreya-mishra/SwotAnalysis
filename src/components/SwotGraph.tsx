@@ -29,7 +29,7 @@ const SwotGraph = ({swotData}: {swotData: SwotDataType}) => {
     items: {toAnalyse: string; belongsTo: string}[],
     category: string,
   ) => {
-    const sortedItems = iteswotDataTypems.sort((a, b) =>
+    const sortedItems = items.sort((a, b) =>
       a.toAnalyse.localeCompare(b.toAnalyse),
     );
 
