@@ -1,139 +1,90 @@
-import React, {useEffect, useRef} from 'react';
-import {Animated, StyleSheet, Text, View} from 'react-native';
-import {AnimatedValues, SwotDataType} from '../SwotType/SwotType';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import {SwortTaskType} from './component/type';
 
-const SwotGraph = ({swotData}: {swotData: SwotDataType}) => {
-  const animatedValues: AnimatedValues = useRef({
-    strengths: new Animated.Value(0),
-    weaknesses: new Animated.Value(0),
-    opportunities: new Animated.Value(0),
-    threats: new Animated.Value(0),
-  }).current;
-
-  const fadeInAnimation = (category: string) => {
-    Animated.timing(animatedValues[category], {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  useEffect(() => {
-    fadeInAnimation('strengths');
-    fadeInAnimation('weaknesses');
-    fadeInAnimation('opportunities');
-    fadeInAnimation('threats');
-  }, []);
-
-  const renderBulletPoints = (
-    items: {toAnalyse: string; belongsTo: string}[],
-    category: string,
-  ) => {
-    const sortedItems = items.sort((a, b) =>
-      a.toAnalyse.localeCompare(b.toAnalyse),
-    );
-
-    return sortedItems.map(
-      (item: {toAnalyse: string; belongsTo: string}, index: number) => (
-        <Animated.Text
-          key={index}
-          style={[
-            styles.matrixItem,
-            {
-              opacity: animatedValues[category].interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-              transform: [
-                {
-                  translateY: animatedValues[category].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-50, 0],
-                  }),
-                },
-              ],
-            },
-          ]}>
-          {'\u2022'} {item.toAnalyse}
-        </Animated.Text>
-      ),
-    );
-  };
-
+type SwotGraphProps = {
+  swotGraphType: SwortTaskType;
+};
+const SwotGraph = ({swotGraphType}: SwotGraphProps) => {
   return (
-    <View style={styles.matrixContainer}>
-      <View style={styles.matrixRow}>
-        <View style={[styles.matrixCell, {backgroundColor: '#BED9DE'}]}>
-          <Text style={styles.categoryTitle}>Strengths</Text>
-          {renderBulletPoints(
-            swotData.filter(item =>
-              item.belongsTo.toLowerCase().includes('strength'),
-            ),
-            'strengths',
-          )}
-        </View>
-        <View style={[styles.matrixCell, {backgroundColor: '#FDD1AA'}]}>
-          <Text style={styles.categoryTitle}>Weaknesses</Text>
-          {renderBulletPoints(
-            swotData.filter(item =>
-              item.belongsTo.toLowerCase().includes('weakness'),
-            ),
-            'weaknesses',
-          )}
-        </View>
+    <View style={styles.container}>
+      <View style={[styles.quadrant, {backgroundColor: '#BED9DE'}]}>
+        <Text style={styles.heading}>Strengths</Text>
+        {swotGraphType.strength.map((task, index) => (
+          <View key={task.id}>
+            <Text style={styles.matrixItem}>
+              {index + 1}- {task.toAnalyse}
+            </Text>
+          </View>
+        ))}
+        {/* Strengths content */}
       </View>
-      <View style={styles.matrixRow}>
-        <View style={[styles.matrixCell, {backgroundColor: '#D4E3C2'}]}>
-          <Text style={styles.categoryTitle}>Opportunities</Text>
-          {renderBulletPoints(
-            swotData.filter(item =>
-              item.belongsTo.toLowerCase().includes('opportunities'),
-            ),
-            'opportunities',
-          )}
-        </View>
-        <View style={[styles.matrixCell, {backgroundColor: '#FBCAC0'}]}>
-          <Text style={styles.categoryTitle}>Threats</Text>
-          {renderBulletPoints(
-            swotData.filter(item =>
-              item.belongsTo.toLowerCase().includes('threats'),
-            ),
-            'threats',
-          )}
-        </View>
+      <View style={[styles.quadrant, {backgroundColor: '#FDD1AA'}]}>
+        <Text style={styles.heading}>Weaknesses</Text>
+        {swotGraphType.weakness.map((task, index) => (
+          <View key={task.id}>
+            <Text style={styles.matrixItem}>
+              {index + 1}- {task.toAnalyse}
+            </Text>
+          </View>
+        ))}
+      </View>
+      <View style={[styles.quadrant, {backgroundColor: '#D4E3C2'}]}>
+        <Text style={styles.heading}>Opportunities</Text>
+        {swotGraphType.opportunities.map((task, index) => (
+          <View key={task.id}>
+            <Text style={styles.matrixItem}>
+              {index + 1}- {task.toAnalyse}
+            </Text>
+          </View>
+        ))}
+      </View>
+      <View style={[styles.quadrant, {backgroundColor: '#FBCAC0'}]}>
+        <Text style={styles.heading}>Threats</Text>
+        {swotGraphType.threats.map((task, index) => (
+          <View key={task.id}>
+            <Text style={styles.matrixItem}>
+              {index + 1}- {task.toAnalyse}
+            </Text>
+          </View>
+        ))}
       </View>
     </View>
   );
 };
 
-export default SwotGraph;
-
 const styles = StyleSheet.create({
-  matrixContainer: {
-    width: '100%',
-    padding: 10,
-    alignItems: 'center',
-  },
-  matrixRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  matrixCell: {
+  container: {
     flex: 1,
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    margin: 2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    // padding: 20,
+    backgroundColor: '#fff',
   },
-  categoryTitle: {
+  quadrant: {
+    width: '50%', // Adjust as needed
+    borderWidth: 1,
+    minHeight: 200,
+    borderColor: '#ccc',
+    // borderRadius: 5,
+    padding: 10,
+    // marginBottom: 20,
+  },
+  heading: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#000',
   },
   matrixItem: {
-    marginBottom: 5,
+    // color: '#000',
+    marginBottom: 4,
     fontWeight: 'bold',
     fontSize: 16,
     color: '#696969',
   },
 });
+
+export default SwotGraph;
