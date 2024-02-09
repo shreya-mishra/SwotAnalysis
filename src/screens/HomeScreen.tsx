@@ -1,18 +1,15 @@
 import {View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {SetStateAction, useState} from 'react';
 import FloatingButton from '../components/FloatingButton';
 import Form from '../components/Form';
-import {swotDummyData, swotItems} from '../constant/SwotContants';
+import {swotDummyData} from '../constant/SwotContants';
 import SowtList from '../components/SowtList';
 import {useNavigation} from '@react-navigation/native';
 import Button_ from '../components/Button_';
+import {SwotDataType} from '../SwotType/SwotType';
 
-interface SwotItem {
-  toAnalyse: string;
-  belongsTo: string;
-}
 const HomeScreen = () => {
-  const [swotData, setSwotData] = useState<SwotItem[]>(swotDummyData);
+  const [swotData, setSwotData] = useState<SwotDataType>(swotDummyData);
   const [showForm, setShowForm] = useState(false);
   const [textInputValue, setTextInputValue] = useState('');
   const [selectedDropdownValue, setSelectedDropdownValue] = useState('');
@@ -24,9 +21,13 @@ const HomeScreen = () => {
 
   const handleFormSubmit = () => {
     if (textInputValue && selectedDropdownValue) {
-      setSwotData(prevSwotData => [
+      setSwotData((prevSwotData: SetStateAction<SwotDataType>) => [
         ...prevSwotData,
-        {toAnalyse: textInputValue, belongsTo: selectedDropdownValue},
+        {
+          id: Math.random(),
+          toAnalyse: textInputValue,
+          belongsTo: selectedDropdownValue,
+        },
       ]);
     }
 

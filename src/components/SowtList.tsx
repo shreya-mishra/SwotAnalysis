@@ -13,8 +13,10 @@ const SowtList = ({
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <View style={styles.swotItem}>
-            <Text>{`To Analyse: ${item.toAnalyse}`}</Text>
-            <Text>{`Belongs To: ${item.belongsTo}`}</Text>
+            <Text
+              style={styles.swotText}>{`To Analyse: ${item.toAnalyse}`}</Text>
+            <Text
+              style={styles.swotText}>{`Belongs To: ${item.belongsTo}`}</Text>
           </View>
         )}
       />
@@ -30,12 +32,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   swotItem: {
-    backgroundColor: '#808080',
+    // backgroundColor: '#808080',
+    backgroundColor: '#efefef',
+    elevation: 3,
     padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 10,
   },
   swotText: {
-    color: '#333',
+    color: '#000',
   },
 });
