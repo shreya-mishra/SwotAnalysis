@@ -1,7 +1,8 @@
 import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {useRoute} from '@react-navigation/native';
-import SwotGraph from '../components/SwotGraph';
+import Swot from '../components/Swot';
+import {SwotType} from '../SwotType/SwotType';
 
 const AnalysisScreen = () => {
   const route = useRoute();
@@ -10,8 +11,7 @@ const AnalysisScreen = () => {
 
   return (
     <View style={styles.pieChartContainer}>
-      {/* <PieChart style={{height: 300}} data={transformedData} /> */}
-      <SwotGraph swotData={swotData} />
+      <Swot swotData={swotData as SwotType[]} />
     </View>
   );
 };
@@ -19,8 +19,6 @@ const AnalysisScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 16,
-    // backgroundColor: '#F5F5F5',
   },
   textInput: {
     height: 40,
@@ -42,6 +40,7 @@ const styles = StyleSheet.create({
   },
   pieChartContainer: {
     alignItems: 'center',
+    flex: 1,
   },
 });
 export default AnalysisScreen;
