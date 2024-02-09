@@ -84,8 +84,7 @@ To learn more about React Native, take a look at the following resources:
 
 **APK**
 
-[APK](https://drive.google.com/file/d/158Oe4DfgVLGsT2d3QoUqU3XBDvncZuX4/view?usp=sharing)
+[APK](https://drive.google.com/file/d/1W_dSkMh5wMXI-hlnbEKS-orArsFWO9Pk/view?usp=sharing)
 
 **Video**
-
-https://github.com/shreya-mishra/SwotAnalysis/assets/61110378/e521379a-8eb2-4f0e-be9d-345a962fc279
+[Screencast from 02-09-2024 11:50:28 PM.webm](https://github.com/shreya-mishra/SwotAnalysis/assets/61110378/5ae9b472-d77b-4929-b68d-7a699e7d0044)
